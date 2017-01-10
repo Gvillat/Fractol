@@ -14,7 +14,6 @@ void        fractals_compute(t_env *env, char *name)
 		y = -1;
 		while (++y < WIN_HEIGHT)
 		{
-			// mandelbrot(x, y, &frctl, env);
 			ptr.fct[frctl.type](x, y , &frctl, env);
 		}
 	}
@@ -24,11 +23,11 @@ void		init_fractal(t_frctl *frctl, char *name, t_ptr *ptr)
 {
 	if (ft_strequ(name, "julia"))
 		init_julia(frctl);
-	else if (ft_strequ(name, "buddhabrot"))
-		init_buddhabrot(frctl);
+	else if (ft_strequ(name, "burningship"))
+		init_burningship(frctl);
 	if (ft_strequ(name, "mandelbrot"))
 		init_mandelbrot(frctl);
 	ptr->fct[0] = mandelbrot;
 	ptr->fct[1] = julia;
-	ptr->fct[2] = buddhabrot;
+	ptr->fct[2] = burningship;
 }

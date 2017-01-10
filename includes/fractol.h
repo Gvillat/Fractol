@@ -99,7 +99,7 @@ void		julia(int x, int y, t_frctl *frctl, t_env *env);
 ** buddhabrot.c
 */
 
-void		init_buddhabrot(t_frctl *frctl);
-void		buddhabrot(int x, int y, t_frctl *frctl, t_env *env);
+void		init_burningship(t_frctl *frctl);
+void		burningship(int x, int y, t_frctl *frctl, t_env *env);
 
 #endif

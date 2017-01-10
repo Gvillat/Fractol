@@ -25,7 +25,7 @@ int		main(int ac, char **av)
 	i = 1;
 	// while (av[i])
 	// {
-		if (ac >= 2 && (ft_strequ(av[i], "mandelbrot") || ft_strequ(av[i], "julia") || ft_strequ(av[i], "buddhabrot")))
+		if (ac >= 2 && (ft_strequ(av[i], "mandelbrot") || ft_strequ(av[i], "julia") || ft_strequ(av[i], "burningship")))
 		{
 			env.mlx = mlx_init(); // initialize mlx server
 			// Instead of followings functions, we'll use put_image now:

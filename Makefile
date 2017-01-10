@@ -11,7 +11,7 @@ SRC_NAME =	main.c\
 			fractals.c\
 			mandelbrot.c\
 			julia.c\
-			buddhabrot.c
+			burningship.c
 
 SRC = $(addprefix $(SRC_PATH)/, $(SRC_NAME))
 
