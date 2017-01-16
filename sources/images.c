@@ -25,13 +25,12 @@ void		put_pixel(t_env *env, int x, int y, int color)
 ** memory.
 */
 
-int			put_image(t_env *env, char *name)
+int			put_image(t_env *env)
 {
-	env->win = mlx_new_window(env->mlx, WIN_WIDTH, WIN_HEIGHT, name); // set a window
 	env->im = mlx_new_image(env->mlx, WIN_WIDTH, WIN_HEIGHT); // create a new image in memory
 	env->im_buf = mlx_get_data_addr(env->im, &(env->bpp), &(env->sl),
         &(env->endian)); // get image buffer (char*)
-	fractals_compute(env, name); // compute image
+	fractals_compute(env); // compute image
 	mlx_put_image_to_window(env->mlx, env->win, env->im, 0, 0); // dump image to window
 	mlx_destroy_image(env->mlx, env->im); // destroy image from memory
 	return (0);

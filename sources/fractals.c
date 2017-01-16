@@ -1,25 +1,26 @@
 #include "../includes/fractol.h"
 
-void        fractals_compute(t_env *env, char *name)
+void        fractals_compute(t_env *env)
 {
 	int		x;
 	int		y;
-	t_frctl	frctl;
-	t_ptr ptr;
-
+	t_ptr 	ptr;
+	
 	x = -1;
-	init_fractal(&frctl, name, &ptr);
+	ptr.fct[0] = mandelbrot;
+	ptr.fct[1] = julia;
+	ptr.fct[2] = burningship;
 	while(++x < WIN_WIDTH)
 	{
 		while (++y < WIN_HEIGHT)
 		{
-			ptr.fct[frctl.type](x, y , &frctl, env);
+			ptr.fct[env->frctl.type](x, y , &env->frctl, env);
 		}
 		y = -1;
 	}
 }
 
-void		init_fractal(t_frctl *frctl, char *name, t_ptr *ptr)
+void		init_fractal(t_frctl *frctl, char *name)
 {
 	if (ft_strequ(name, "julia"))
 		init_julia(frctl);
@@ -27,7 +28,4 @@ void		init_fractal(t_frctl *frctl, char *name, t_ptr *ptr)
 		init_burningship(frctl);
 	if (ft_strequ(name, "mandelbrot"))
 		init_mandelbrot(frctl);
-	ptr->fct[0] = mandelbrot;
-	ptr->fct[1] = julia;
-	ptr->fct[2] = burningship;
 }

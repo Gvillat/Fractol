@@ -2,12 +2,12 @@
 # define FRACTOL_H
 
 # include <stdio.h>
-# include "../minilibx_macos/mlx.h"
-// # include "mlx.h"
+// # include "../minilibx_macos/mlx.h"
+# include "mlx.h"
 # include "../libft/libft.h"
 # include "math.h"
-# define WIN_WIDTH 1000
-# define WIN_HEIGHT 1000
+# define WIN_WIDTH 600
+# define WIN_HEIGHT 480
 
 
 /*
@@ -53,8 +53,7 @@ typedef struct		s_env
 	int 			bpp;
 	int 			endian;
 	int 			sl;
-	int				size_x;
-	int				size_y;
+	t_frctl 		frctl;
 }					t_env;
 
 /*
@@ -71,14 +70,14 @@ typedef struct		s_ptr
 */
 
 void		put_pixel(t_env *env, int x, int y, int color);
-int			put_image(t_env *env, char *name);
+int			put_image(t_env *env);
 
 /*
 ** fractals.c
 */
 
-void		fractals_compute(t_env *env, char* name);
-void		init_fractal(t_frctl *frctl, char *name, t_ptr *ptr);
+void		fractals_compute(t_env *env);
+void		init_fractal(t_frctl *frctl, char *name);
 
 
 /*
