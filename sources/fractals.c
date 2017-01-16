@@ -11,11 +11,11 @@ void        fractals_compute(t_env *env, char *name)
 	init_fractal(&frctl, name, &ptr);
 	while(++x < WIN_WIDTH)
 	{
-		y = -1;
 		while (++y < WIN_HEIGHT)
 		{
 			ptr.fct[frctl.type](x, y , &frctl, env);
 		}
+		y = -1;
 	}
 }
 

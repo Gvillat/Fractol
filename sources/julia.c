@@ -10,6 +10,7 @@ void		init_julia(t_frctl *frctl)
 	frctl->x1 = -1;
 	frctl->x2 = 1;
 	frctl->y1 = -1.2;
+	frctl->color = 16;
 	frctl->y2 = 1.2;
 	frctl->settings.zoom_x = WIN_WIDTH / (frctl->x2 - frctl->x1);
 	frctl->settings.zoom_y = WIN_HEIGHT / (frctl->y2 - frctl->y1);

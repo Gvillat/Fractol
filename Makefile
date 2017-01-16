@@ -23,8 +23,8 @@ $(NAME):
 	@make --directory libft/
 	@$(CC) $(FLAGS) -o fractol libft/libft.a $(SRC) $(FRAMEWORK)
 
-FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
-# minilibx/libmlx.a -framework OpenGL -framework AppKit
+# FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
+FRAMEWORK = minilibx_macos/libmlx.a -framework OpenGL -framework AppKit
 
 all: $(NAME)
 

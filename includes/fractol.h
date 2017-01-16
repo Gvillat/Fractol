@@ -2,12 +2,12 @@
 # define FRACTOL_H
 
 # include <stdio.h>
-// # include "../minilibx_macos/mlx.h"
-# include "mlx.h"
+# include "../minilibx_macos/mlx.h"
+// # include "mlx.h"
 # include "../libft/libft.h"
 # include "math.h"
-# define WIN_WIDTH 270
-# define WIN_HEIGHT 240
+# define WIN_WIDTH 1000
+# define WIN_HEIGHT 1000
 
 
 /*
@@ -36,6 +36,7 @@ typedef struct      s_frctl
 	float			c_i;
 	float			z_r;
 	float			z_i;
+	int				color;
 	t_opt			settings;
 }                   t_frctl;
 
