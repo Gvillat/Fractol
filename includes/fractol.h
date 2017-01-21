@@ -2,8 +2,8 @@
 # define FRACTOL_H
 
 # include <stdio.h>
-// # include "../minilibx_macos/mlx.h"
-# include "mlx.h"
+# include "../minilibx_macos/mlx.h"
+// # include "mlx.h"
 # include "../libft/libft.h"
 # include "math.h"
 # define WIN_WIDTH 600
@@ -54,6 +54,10 @@ typedef struct		s_env
 	int 			endian;
 	int 			sl;
 	t_frctl 		frctl;
+	void			(*draw)(struct s_env*);
+	int 			x;
+	int 			y;
+	char 			*name;
 }					t_env;
 
 /*
@@ -71,20 +75,24 @@ typedef struct		s_ptr
 
 void		put_pixel(t_env *env, int x, int y, int color);
 int			put_image(t_env *env);
-
+int				mouse(int button, int x, int y, t_env *env);
+int						move_f(t_frctl *f, double x, double y);
+int						zoom_f(t_frctl *f, double s);
+int				key(int keycode, t_env *env);
+int				mouse_motion(int x, int y, t_env *env);
 /*
 ** fractals.c
 */
 
 void		fractals_compute(t_env *env);
-void		init_fractal(t_frctl *frctl, char *name);
+t_env 		init_fractol(t_env env, void *mlx, char *name);
 
-
+int				mouse_motion(int x, int y, t_env *env);
 /*
 ** mandelbrot.c
 */
 
-void		init_mandelbrot(t_frctl *frctl);
+void		init_mandelbrot(t_env *env);
 void		mandelbrot(int x, int y, t_frctl *frctl, t_env *env);
 
 
@@ -92,14 +100,14 @@ void		mandelbrot(int x, int y, t_frctl *frctl, t_env *env);
 ** julia.c
 */
 
-void		init_julia(t_frctl *frctl);
+void		init_julia(t_env *env);
 void		julia(int x, int y, t_frctl *frctl, t_env *env);
 
 /*
 ** buddhabrot.c
 */
 
-void		init_burningship(t_frctl *frctl);
+void		init_burningship(t_env *env);
 void		burningship(int x, int y, t_frctl *frctl, t_env *env);
 
 #endif

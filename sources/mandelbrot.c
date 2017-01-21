@@ -4,17 +4,19 @@
 ** Init Mandelbrot structure.
 */
 
-void		init_mandelbrot(t_frctl *frctl)
+void		init_mandelbrot(t_env *env)
 {
-	frctl->type = 0;
-	frctl->x1 = -2.1;
-	frctl->x2 = 0.6;
-	frctl->y1 = -1.2;
-	frctl->color = 0;
-	frctl->y2 = 1.2;
-	frctl->settings.zoom_x = WIN_WIDTH / (frctl->x2 - frctl->x1);
-	frctl->settings.zoom_y = WIN_HEIGHT / (frctl->y2 - frctl->y1);
-	frctl->settings.max_iter = 50;
+	env->im = mlx_new_image(env->mlx, WIN_WIDTH, WIN_HEIGHT); // create a new image in memory
+	env->frctl.type = 0;
+	env->frctl.x1 = -2.1;
+	env->frctl.x2 = 0.6;
+	env->frctl.y1 = -1.2;
+	env->frctl.color = 0;
+	env->frctl.y2 = 1.2;
+	env->frctl.settings.zoom_x = WIN_WIDTH / (env->frctl.x2 - env->frctl.x1);
+	env->frctl.settings.zoom_y = WIN_HEIGHT / (env->frctl.y2 - env->frctl.y1);
+	env->frctl.settings.max_iter = 50;
+	fractals_compute(env); // compute image
 }
 
 /*
@@ -25,6 +27,7 @@ void        mandelbrot(int x, int y, t_frctl *frctl, t_env *env)
 {
 	int		i;
 	float	tmp;
+	int 	dv;
 
 	i = 0;
 	frctl->c_r = x / frctl->settings.zoom_x + frctl->x1;
@@ -39,12 +42,13 @@ void        mandelbrot(int x, int y, t_frctl *frctl, t_env *env)
 		frctl->z_i = 2 * frctl->z_i * tmp + frctl->c_i;
 		i++;
 	}
+	dv = 255 / frctl->settings.max_iter;
 	if (i == frctl->settings.max_iter)
 	{
-		put_pixel(env, x, y, 000000000);
+		put_pixel(env, x, y, (i * dv << frctl->color) - 150);
 	}
 	else
 	{
-		put_pixel(env, x, y, i * 255 / frctl->settings.max_iter);
+		put_pixel(env, x, y, (i * dv << frctl->color << 8));
 	}
 }

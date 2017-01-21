@@ -18,14 +18,15 @@ void        fractals_compute(t_env *env)
 		}
 		y = -1;
 	}
+	mlx_put_image_to_window(env->mlx, env->win, env->im, 0, 0); // dump image to window
 }
 
-void		init_fractal(t_frctl *frctl, char *name)
-{
-	if (ft_strequ(name, "julia"))
-		init_julia(frctl);
-	else if (ft_strequ(name, "burningship"))
-		init_burningship(frctl);
-	if (ft_strequ(name, "mandelbrot"))
-		init_mandelbrot(frctl);
-}
+// void		init_fractal(t_frctl *frctl, char *name)
+// {
+// 	if (ft_strequ(name, "julia"))
+// 		init_julia(frctl);
+// 	else if (ft_strequ(name, "burningship"))
+// 		init_burningship(frctl);
+// 	if (ft_strequ(name, "mandelbrot"))
+// 		init_mandelbrot(frctl);
+// }

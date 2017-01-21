@@ -26,92 +26,146 @@ void clear_image(char **buff)
 		(*buff)[i++] = 0;
 }
 
-int 		key(int keycode, t_env *env)
+int						move_f(t_frctl *f, double x, double y)
 {
-	if (keycode == 53)
-		exit(1);
-	if (keycode == 126)  // up
-	{
-		env->frctl.y1 += 0.5;
-		env->frctl.y2 += 0.5;
-	}
-	if (keycode == 125)  // down
-	{
-		env->frctl.y1 -= 0.5;
-		env->frctl.y2 -= 0.5;
-	}
-	if (keycode == 124)  // right
-	{
-		env->frctl.x1 -= 0.5;
-		env->frctl.x2 -= 0.5;
-	}
-	if (keycode == 123)  // left
-	{
-		env->frctl.x1 += 0.5;
-		env->frctl.x2 += 0.5;
-	}
-	if (keycode == 69)  // plus +
-		env->frctl.settings.max_iter += 5;
-	if (keycode == 78)  // moins -
-		env->frctl.settings.max_iter -= 5;
-	clear_image(&env->im_buf);
-	put_image(env);
-	return (1);
-}
+	double	d[2];
 
-int						zoom_f(t_env *env, double s)
-{
-	if (s > 0)
+	d[0] = (f->x2 - f->x1);
+	d[1] = (f->y2 - f->y1);
+	if (x > 0)
 	{
-		env->frctl.x1 += (env->frctl.x2 - env->frctl.x1) * s;
-		env->frctl.y1 += (env->frctl.y2 - env->frctl.y1) * s;
-		env->frctl.x2 -= (env->frctl.x2 - env->frctl.x1) * s;
-		env->frctl.y2 -= (env->frctl.y2 - env->frctl.y1) * s;
+		f->x1 += d[0] * x;
+		f->x2 = f->x1 + d[0];
 	}
 	else
 	{
-		env->frctl.x1 -= (env->frctl.x2 - env->frctl.x1) * -s;
-		env->frctl.y1 -= (env->frctl.y2 - env->frctl.y1) * -s;
-		env->frctl.x2 += (env->frctl.x2 - env->frctl.x1) * -s;
-		env->frctl.y2 += (env->frctl.y2 - env->frctl.y1) * -s;
+		f->x1 -= d[0] * -x;
+		f->x2 = f->x1 + d[0];
+	}
+	if (y > 0)
+	{
+		f->y1 += d[1] * y;
+		f->y2 = f->y1 + d[1];
+	}
+	else
+	{
+		f->y1 -= d[1] * -y;
+		f->y2 = f->y1 + d[1];
 	}
 	return (0);
 }
 
-int  mouse(int bp, int x, int y t_env *env)
+
+void			zoom_in(int x, int y, t_env *env)
 {
-	if (bp == 4)  // scroll-up
+	env->zoom *= 2;
+	env->tmpx = env->x1 + x * (env->x2 - env->x1) / (WIN_X - 50);
+	env->tmpy = env->y1 + y * (env->y2 - env->y1) / (WIN_Y - 50);
+	env->tmpx2 = env->x1;
+	env->tmpy2 = env->y1;
+	env->x1 = env->tmpx - (env->x2 - env->x1) / 4;
+	env->x2 = env->tmpx + (env->x2 - env->tmpx2) / 4;
+	env->y1 = env->tmpy - (env->y2 - env->y1) / 4;
+	env->y2 = env->tmpy + (env->y2 - env->tmpy2) / 4;
+	env->frctl.settings.max_iter += 5;
+}
+
+void			zoom_out(int x, int y, t_env *env)
+{
+	if (env->zoom > 125)
 	{
-		zoom_f(env, 0.05);
+		env->zoom /= 2;
+		env->tmpx = env->x1 + x * (env->x2 - env->x1) / WIN_X;
+		env->tmpy = env->y1 + y * (env->y2 - env->y1) / WIN_Y;
+		env->tmpx2 = env->x1;
+		env->tmpy2 = env->y1;
+		env->x1 = env->tmpx - (env->x2 - env->x1);
+		env->x2 = env->tmpx + (env->x2 - env->tmpx2);
+		env->y1 = env->tmpy - (env->y2 - env->y1);
+		env->y2 = env->tmpy + (env->y2 - env->tmpy2);
+		env->max -= 5;
 	}
-	if (bp == 5)  // scroll-down
+}
+
+int				mouse(int kc, int x, int y, t_env *env)
+{
+	ft_bzero(env->data, WIN_Y * WIN_X * 4);
+	if (y > 0 && env->check)
 	{
-		zoom_f(env, -0.05);
+		if ((kc == 1 || kc == 5) && x <= WIN_X)
+			ft_zoom_in(x, y, env);
+		if ((kc == 2 || kc == 4) && x <= WIN_X)
+			ft_zoom_out(x, y, env);
 	}
-	clear_image(&env->im_buf);
-	put_image(env);
+	env->check = 1;
 	return (1);
 }
 
-int		main(int ac, char **av)
+
+
+int				key(int keycode, t_env *env)
+{
+	t_frctl	*f;
+
+	f = &env->frctl;
+	if (keycode == 124)
+		move_f(f, -0.2, 0.0);
+	if (keycode == 123)
+		move_f(f, 0.2, 0.0);
+	if (keycode == 126)
+		move_f(f, 0.0, -0.2);
+	if (keycode == 125)
+		move_f(f, 0.0, 0.2);
+	if (keycode == 5)
+		zoom_in(f, 0.3);
+	if (keycode == 4)
+		zoom_out(f, -0.3);
+	if (keycode == 15)
+		f->color = 16;
+	if (keycode == 9)
+		f->color = 8;
+	if (keycode == 11)
+		f->color = 0;
+	if (keycode == 53)
+		exit(0);
+	fractals_compute(env);
+	return (0);
+}
+
+int				mouse_motion(int x, int y, t_env *env)
+{
+	t_frctl	*f;
+
+	f = &env->frctl;
+	f->c_r = (double)x / WIN_WIDTH;
+	f->c_i = (double)y / WIN_HEIGHT;
+	fractals_compute(env);
+	return (0);
+}
+
+
+int				main(int ac, char **av)
 {
 	t_env	env;
 
-	if (ac >= 2 && (ft_strequ(av[1], "mandelbrot") || ft_strequ(av[1], "julia") || ft_strequ(av[1], "burningship")))
+	if (ac == 2)
 	{
 		env.mlx = mlx_init(); // initialize mlx server
-		env.win = mlx_new_window(env.mlx, WIN_WIDTH, WIN_HEIGHT, "fractol"); // set a window
-		init_fractal(&env.frctl, av[1]);
-		put_image(&env); // create, process and display image
-		mlx_mouse_hook(env.win, &mouse, &env);
-		mlx_key_hook(env.win, &key, &env);
-
-		// mlx_hook()
+		env.win = mlx_new_window(env.mlx, WIN_WIDTH, WIN_HEIGHT, "Fractol");
+		mlx_hook(env.win, 2, (1L << 0), key, &env);
+		mlx_mouse_hook(env.win, mouse, &env);
+		if (av[1][0] == '1' && av[1][1] == 0)
+			init_mandelbrot(&env);
+		else if (av[1][0] == '2' && av[1][1] == 0)
+			init_julia(&env);
+		else if (av[1][0] == '3' && av[1][1] == 0)
+			init_burningship(&env);
+		else
+			ft_error("too much arguments or not enough");
 		mlx_loop(env.mlx);
 	}
 	else
 		ft_error("too much arguments or not enough");
-
 	return (0);
 }
 
@@ -121,4 +175,3 @@ int		main(int ac, char **av)
 //mouse hook
 //expose
 //color
-voila

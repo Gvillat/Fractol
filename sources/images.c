@@ -13,6 +13,8 @@ void		put_pixel(t_env *env, int x, int y, int color)
 
 	if (x < 0 || y < 0 || x >= WIN_WIDTH || y >= WIN_HEIGHT)
 		return;
+	env->im_buf = mlx_get_data_addr(env->im, &(env->bpp), &(env->sl),
+    &(env->endian));
 	i = x * env->bpp / 8 + y * env->sl;
 	env->im_buf[i] = color & 0xFF; // Blue
 	env->im_buf[i + 1] = (color & 0xFF00) >> 8; // Green
@@ -25,13 +27,3 @@ void		put_pixel(t_env *env, int x, int y, int color)
 ** memory.
 */
 
-int			put_image(t_env *env)
-{
-	env->im = mlx_new_image(env->mlx, WIN_WIDTH, WIN_HEIGHT); // create a new image in memory
-	env->im_buf = mlx_get_data_addr(env->im, &(env->bpp), &(env->sl),
-        &(env->endian)); // get image buffer (char*)
-	fractals_compute(env); // compute image
-	mlx_put_image_to_window(env->mlx, env->win, env->im, 0, 0); // dump image to window
-	mlx_destroy_image(env->mlx, env->im); // destroy image from memory
-	return (0);
-}

@@ -4,17 +4,19 @@
 ** Init burningship structure.
 */
 
-void		init_burningship(t_frctl *frctl)
+void		init_burningship(t_env *env)
 {
-	frctl->type = 2;
-	frctl->x1 = -2;
-	frctl->x2 = 2;
-	frctl->y1 = -2;
-	frctl->y2 = 2;
-	frctl->color = 8;
-	frctl->settings.zoom_x = WIN_WIDTH / (frctl->x2 - frctl->x1);
-	frctl->settings.zoom_y = WIN_HEIGHT / (frctl->y2 - frctl->y1);
-	frctl->settings.max_iter = 90;
+	env->im = mlx_new_image(env->mlx, WIN_WIDTH, WIN_HEIGHT); // create a new image in memory
+	env->frctl.type = 2;
+	env->frctl.x1 = -2;
+	env->frctl.x2 = 2;
+	env->frctl.y1 = -2;
+	env->frctl.y2 = 2;
+	env->frctl.color = 8;
+	env->frctl.settings.zoom_x = WIN_WIDTH / (env->frctl.x2 - env->frctl.x1);
+	env->frctl.settings.zoom_y = WIN_HEIGHT / (env->frctl.y2 - env->frctl.y1);
+	env->frctl.settings.max_iter = 90;
+	fractals_compute(env); // compute image
 }
 
 /*
@@ -47,6 +49,6 @@ void        burningship(int x, int y, t_frctl *frctl, t_env *env)
 	}
 	else
 	{
-		put_pixel(env, x, y, (i * dv << frctl->color << 8) );
+		put_pixel(env, x, y, (i * dv << frctl->color << 8));
 	}
 }
