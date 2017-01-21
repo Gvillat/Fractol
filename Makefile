@@ -7,8 +7,7 @@ NAME = fractol
 SRC_PATH = ./sources
 
 SRC_NAME =	main.c\
-			images.c\
-			fractals.c\
+			control.c\
 			mandelbrot.c\
 			julia.c\
 			burningship.c
@@ -23,8 +22,8 @@ $(NAME):
 	@make --directory libft/
 	@$(CC) $(FLAGS) -o fractol libft/libft.a $(SRC) $(FRAMEWORK)
 
-# FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
-FRAMEWORK = minilibx_macos/libmlx.a -framework OpenGL -framework AppKit
+FRAMEWORK = -lmlx -framework OpenGL -framework AppKit
+# FRAMEWORK = minilibx_macos/libmlx.a -framework OpenGL -framework AppKit
 
 all: $(NAME)
 

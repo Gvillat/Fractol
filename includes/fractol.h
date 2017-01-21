@@ -2,8 +2,8 @@
 # define FRACTOL_H
 
 # include <stdio.h>
-# include "../minilibx_macos/mlx.h"
-// # include "mlx.h"
+// # include "../minilibx_macos/mlx.h"
+# include "mlx.h"
 # include "../libft/libft.h"
 # include "math.h"
 # define WIN_WIDTH 600
@@ -28,6 +28,8 @@ typedef struct		s_opt
 typedef struct      s_frctl
 {
 	int				type;
+	int 			x;
+	int 			y;
 	float			x1;
 	float			y1;
 	float			x2;
@@ -55,9 +57,6 @@ typedef struct		s_env
 	int 			sl;
 	t_frctl 		frctl;
 	void			(*draw)(struct s_env*);
-	int 			x;
-	int 			y;
-	char 			*name;
 }					t_env;
 
 /*
@@ -76,8 +75,8 @@ typedef struct		s_ptr
 void		put_pixel(t_env *env, int x, int y, int color);
 int			put_image(t_env *env);
 int				mouse(int button, int x, int y, t_env *env);
-int						move_f(t_frctl *f, double x, double y);
-int						zoom_f(t_frctl *f, double s);
+void						move_f(t_frctl *f, double x, double y);
+int	zoom(int key, int x, int y, t_env *env);
 int				key(int keycode, t_env *env);
 int				mouse_motion(int x, int y, t_env *env);
 /*

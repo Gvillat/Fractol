@@ -17,9 +17,9 @@ void		init_julia(t_env *env)
 	env->frctl.c_i = 0.01;
 	env->frctl.settings.zoom_x = WIN_WIDTH / (env->frctl.x2 - env->frctl.x1);
 	env->frctl.settings.zoom_y = WIN_HEIGHT / (env->frctl.y2 - env->frctl.y1);
-	env->frctl.settings.max_iter = 200;
-	fractals_compute(env);
+	env->frctl.settings.max_iter = 100;
 	mlx_hook(env->win, 6, (1L << 6), mouse_motion, env);
+	fractals_compute(env);
 }
 
 /*
@@ -45,10 +45,6 @@ void        julia(int x, int y, t_frctl *frctl, t_env *env)
 	}
 	dv = 255 / frctl->settings.max_iter;
 	if (i == frctl->settings.max_iter)
-	{
-		put_pixel(env, x, y, (i * dv << frctl->color) - 150);
-	}
-	else
 	{
 		put_pixel(env, x, y, (i * dv << frctl->color));
 	}
